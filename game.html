@@ -1,0 +1,102 @@
+<!--This is a simple game built by writing just a few lines of code in HTML and JavaScript. The player block has to be moved from the starting position to reach the finishing point while avoiding the obstacle in its way. -->
+
+
+<html>
+
+<head>
+  <style>
+    #game {
+      height: 400px;
+      width: 800px;
+      background-color: darkorange;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Game</h1>
+  <button onclick="movePlayer()">MOVE</button>
+  <br>
+  <canvas id="game"></canvas>
+
+  <script>
+    console.log('Hello World')
+    let game = document.getElementById('game')
+    let canvas = game.getContext('2d')
+    let gameRunning = true
+    let player = {
+      x: 0,
+      y: 50,
+      w: 30,
+      h: 30
+    }
+    let goal = {
+      x: 270,
+      y: 50,
+      w: 30,
+      h: 30
+    }
+    let enemy = {
+      x: 150,
+      y: 0,
+      w: 30,
+      h: 30,
+      direction: 1
+    }
+    function movePlayer () {
+      player.x += 10
+    }
+    function moveEnemy() {
+      enemy.y += enemy.direction
+      if (enemy.direction == 1 && enemy.y == 120) {
+        enemy.direction = -1
+      }
+      if (enemy.direction == -1 && enemy.y == 0) {
+        enemy.direction = 1
+      }
+    }
+    function checkCollision (b1, b2) {
+      if ((b1.x > b2.x - b1.w) && (b1.y > b2.y - b1.h)) {
+        if ((b1.x < b2.x + b2.w) && (b1.y < b2.y + b2.h)) {
+          return true
+        }
+      }
+      return false
+    }
+    function update() {
+      console.log('update')
+      canvas.clearRect(0, 0, 300, 200)
+      //player
+      canvas.fillStyle = 'blue'
+      canvas.fillRect(player.x, player.y, player.w, player.h)
+      //goal
+      canvas.fillStyle = 'green'
+      canvas.fillRect(goal.x, goal.y, goal.w, goal.h)
+      //enemy
+      canvas.fillStyle = 'red'
+      canvas.fillRect(enemy.x, enemy.y, enemy.w, enemy.h)
+    }
+    // while(true) {
+    //   update()
+    // }
+    function gameloop () {
+      if (!gameRunning)  {
+        return
+      }
+      moveEnemy()
+      update()
+      if (checkCollision(player, goal)) {
+        gameRunning = false
+         window.alert('You Won!!')
+      }
+      if (checkCollision(player, enemy)) {
+        gameRunning = false
+        window.alert('Oops! Play again')
+      }
+      window.requestAnimationFrame(gameloop)
+    }
+    gameloop()
+  </script>
+</body>
+
+</html>

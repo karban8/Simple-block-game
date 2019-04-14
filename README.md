@@ -1,0 +1,1 @@
+This is a simple game built by writing just a few lines of code in HTML and JavaScript. The block has to be moved from the starting position to reach the finishing point while avoiding the obstacle in its way.
